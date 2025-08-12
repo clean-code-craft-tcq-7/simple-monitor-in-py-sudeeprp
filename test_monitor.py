@@ -1,9 +1,19 @@
 import unittest
 from unittest.mock import patch
-from monitor import vitals_ok
+from monitor import vitals_ok, alert_if_not_in_range
 
 
 class MonitorTest(unittest.TestCase):
+
+    @patch('monitor.displayAlertMessage')
+    def test_alerts_when_less_than_min(self, mock_alert):
+        self.assertFalse(alert_if_not_in_range(5, 15, 60, 'Value out of range!'))
+        mock_alert.assert_called_once_with('Value out of range!')
+
+    @patch('monitor.displayAlertMessage')
+    def test_alerts_when_greater_than_max(self, mock_alert):
+        self.assertFalse(alert_if_not_in_range(65, 15, 60, 'Value out of range!'))
+        mock_alert.assert_called_once_with('Value out of range!')
 
     @patch('monitor.displayAlertMessage')
     def test_ok_when_all_vitals_in_range(self, mock_alert):
