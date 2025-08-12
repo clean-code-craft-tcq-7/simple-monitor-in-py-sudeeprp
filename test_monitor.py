@@ -1,6 +1,6 @@
 import unittest
 from unittest.mock import patch
-from monitor import vitals_ok, alert_if_not_in_range
+from monitor import vitals_ok, alert_if_not_in_range, report_is_normal
 
 
 class MonitorTest(unittest.TestCase):
