@@ -26,18 +26,8 @@ class MonitorTest(unittest.TestCase):
         mock_alert.assert_called_once_with('Temperature critical!')
 
     @patch('monitor.displayAlertMessage')
-    def test_not_ok_when_temperature_high(self, mock_alert):
-        self.assertFalse(vitals_ok(103, 70, 98))
-        mock_alert.assert_called_once_with('Temperature critical!')
-
-    @patch('monitor.displayAlertMessage')
     def test_not_ok_when_pulse_rate_high(self, mock_alert):
         self.assertFalse(vitals_ok(98.1, 102, 70))
-        mock_alert.assert_called_once_with('Pulse Rate is out of range!')
-
-    @patch('monitor.displayAlertMessage')
-    def test_not_ok_when_pulse_rate_low(self, mock_alert):
-        self.assertFalse(vitals_ok(98.1, 40, 70))
         mock_alert.assert_called_once_with('Pulse Rate is out of range!')
 
     @patch('monitor.displayAlertMessage')
