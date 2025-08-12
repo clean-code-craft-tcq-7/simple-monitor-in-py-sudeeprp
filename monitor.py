@@ -47,7 +47,7 @@ map_vital_to_check = {
 }
 
 def report_is_normal(report):
-  return (temperature_ok(report['temperature']) and
-          pulse_rate_ok(report['pulseRate']) and
-          spo2_ok(report['spo2']) and
-          blood_sugar_ok(report['bloodSugar']))
+  for vital, check in map_vital_to_check.items():
+    if not check(report[vital]):
+      return False
+  return True
