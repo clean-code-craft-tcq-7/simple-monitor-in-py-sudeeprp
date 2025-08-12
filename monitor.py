@@ -3,35 +3,51 @@ from time import sleep
 import sys
 
 
+def displayAlertMessage(message):
+  print(message)
+  for i in range(6):
+    print('\r* ', end='')
+    sys.stdout.flush()
+    sleep(1)
+    print('\r *', end='')
+    sys.stdout.flush()
+    sleep(1)
+
+
+def is_in_range(value, min_value, max_value):
+  return min_value <= value <= max_value
+
+
+def alert_if_not_in_range(value, min_value, max_value, alert_message):
+  if not is_in_range(value, min_value, max_value):
+    displayAlertMessage(alert_message)
+    return False
+  return True
+
+def temperature_ok(temperature):
+  return alert_if_not_in_range(temperature, 95, 102, 'Temperature critical!')
+
+def pulse_rate_ok(pulseRate):
+  return alert_if_not_in_range(pulseRate, 60, 100, 'Pulse Rate is out of range!')
+
+def spo2_ok(spo2):
+  return alert_if_not_in_range(spo2, 90, 100, 'Oxygen Saturation out of range!')
+
+def blood_sugar_ok(bloodSugar):
+  return alert_if_not_in_range(bloodSugar, 70, 110, 'Blood Sugar is out of range!')
+
 def vitals_ok(temperature, pulseRate, spo2):
-  if temperature > 102 or temperature < 95:
-    print('Temperature critical!')
-    for i in range(6):
-      print('\r* ', end='')
-      sys.stdout.flush()
-      sleep(1)
-      print('\r *', end='')
-      sys.stdout.flush()
-      sleep(1)
-    return False
-  elif pulseRate < 60 or pulseRate > 100:
-    print('Pulse Rate is out of range!')
-    for i in range(6):
-      print('\r* ', end='')
-      sys.stdout.flush()
-      sleep(1)
-      print('\r *', end='')
-      sys.stdout.flush()
-      sleep(1)
-    return False
-  elif spo2 < 90:
-    print('Oxygen Saturation out of range!')
-    for i in range(6):
-      print('\r* ', end='')
-      sys.stdout.flush()
-      sleep(1)
-      print('\r *', end='')
-      sys.stdout.flush()
-      sleep(1)
-    return False
+  return temperature_ok(temperature) and pulse_rate_ok(pulseRate) and spo2_ok(spo2)
+
+map_vital_to_check = {
+  'temperature': temperature_ok,
+  'pulseRate': pulse_rate_ok,
+  'spo2': spo2_ok,
+  'bloodSugar': blood_sugar_ok
+}
+
+def report_is_normal(report):
+  for vital, check in map_vital_to_check.items():
+    if not check(report[vital]):
+      return False
   return True
