@@ -39,6 +39,13 @@ def blood_sugar_ok(bloodSugar):
 def vitals_ok(temperature, pulseRate, spo2):
   return temperature_ok(temperature) and pulse_rate_ok(pulseRate) and spo2_ok(spo2)
 
+map_vital_to_check = {
+  'temperature': temperature_ok,
+  'pulseRate': pulse_rate_ok,
+  'spo2': spo2_ok,
+  'bloodSugar': blood_sugar_ok
+}
+
 def report_is_normal(report):
   return (temperature_ok(report['temperature']) and
           pulse_rate_ok(report['pulseRate']) and

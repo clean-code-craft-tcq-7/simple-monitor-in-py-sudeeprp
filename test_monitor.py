@@ -35,6 +35,16 @@ class MonitorTest(unittest.TestCase):
         self.assertFalse(vitals_ok(98.1, 70, 85))
         mock_alert.assert_called_once_with('Oxygen Saturation out of range!')
 
+    @patch('monitor.displayAlertMessage')
+    def test_not_ok_when_blood_sugar_high(self, mock_alert):
+        self.assertFalse(report_is_normal({
+            'temperature': 98.1,
+            'pulseRate': 70,
+            'spo2': 97,
+            'bloodSugar': 180
+        }))
+        mock_alert.assert_called_once_with('Blood Sugar is out of range!')
+
 
 if __name__ == '__main__':
   unittest.main()
